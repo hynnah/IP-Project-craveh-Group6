@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu - Craveh</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container header-container">
+      <div class="logo">
+        <h1>craveh</h1>
+      </div>
+      <button class="hamburger" id="hamburger-btn" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+      <nav class="nav" id="main-nav">
+        <a href="menu.html" class="nav-link active">Menu</a>
+        <a href="history.html" class="nav-link">History</a>
+        <a href="checkout.html" class="nav-link">Checkout <span class="cart-badge">2</span></a>
+        <a href="account.html" class="nav-link">Account</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="menu-hero">
+    <div class="container">
+      <h2 class="menu-hero-title">What are you craving today?</h2>
+      <p class="menu-hero-sub">Fresh food, delivered fast to your door.</p>
+      <div class="menu-search-wrapper">
+        <svg class="menu-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="menu-search" placeholder="Search menu...">
+      </div>
+    </div>
+  </section>
+
+  <main class="main-content main-content-menu">
+    <div class="container">
+      <div class="category-filter">
+        <button class="category-btn active">All</button>
+        <button class="category-btn">Burgers</button>
+        <button class="category-btn">Pizza</button>
+        <button class="category-btn">Pasta</button>
+        <button class="category-btn">Seafood</button>
+        <button class="category-btn">Desserts</button>
+        <button class="category-btn">Beverages</button>
+      </div>
+      <p class="menu-result-count">6 items found</p>
+
+      <div class="menu-grid">
+        <div class="menu-item">
+          <div class="menu-item-image-wrapper">
+            <span class="menu-item-badge">Popular</span>
+            <img class="menu-item-image" src="https://picsum.photos/seed/craveh-burger/400/300" alt="Classic Cheeseburger">
+          </div>
+          <div class="menu-item-content">
+            <div class="menu-item-name">Classic Cheeseburger</div>
+            <div class="menu-item-description">Beef patty, cheddar, lettuce, tomato, and house sauce on a toasted bun.</div>
+            <div class="menu-item-footer">
+              <span class="menu-item-price">6.99</span>
+              <button class="btn btn-primary btn-add">Add</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-image-wrapper">
+            <img class="menu-item-image" src="https://picsum.photos/seed/craveh-pizza/400/300" alt="Pepperoni Pizza">
+          </div>
+          <div class="menu-item-content">
+            <div class="menu-item-name">Pepperoni Pizza</div>
+            <div class="menu-item-description">Wood-fired crust, mozzarella, and double pepperoni.</div>
+            <div class="menu-item-footer">
+              <span class="menu-item-price">10.50</span>
+              <button class="btn btn-primary btn-add">Add</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-image-wrapper">
+            <img class="menu-item-image" src="https://picsum.photos/seed/craveh-pasta/400/300" alt="Creamy Carbonara">
+          </div>
+          <div class="menu-item-content">
+            <div class="menu-item-name">Creamy Carbonara</div>
+            <div class="menu-item-description">Fettuccine tossed in a rich egg-and-parmesan sauce with crispy bacon.</div>
+            <div class="menu-item-footer">
+              <span class="menu-item-price">8.75</span>
+              <button class="btn btn-primary btn-add">Add</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-image-wrapper">
+            <span class="menu-item-badge">New</span>
+            <img class="menu-item-image" src="https://picsum.photos/seed/craveh-shrimp/400/300" alt="Garlic Butter Shrimp">
+          </div>
+          <div class="menu-item-content">
+            <div class="menu-item-name">Garlic Butter Shrimp</div>
+            <div class="menu-item-description">Sautéed shrimp in garlic butter, served with steamed rice.</div>
+            <div class="menu-item-footer">
+              <span class="menu-item-price">12.25</span>
+              <button class="btn btn-primary btn-add">Add</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-image-wrapper">
+            <img class="menu-item-image" src="https://picsum.photos/seed/craveh-cake/400/300" alt="Chocolate Lava Cake">
+          </div>
+          <div class="menu-item-content">
+            <div class="menu-item-name">Chocolate Lava Cake</div>
+            <div class="menu-item-description">Warm chocolate cake with a molten center, dusted with cocoa.</div>
+            <div class="menu-item-footer">
+              <span class="menu-item-price">5.50</span>
+              <button class="btn btn-primary btn-add">Add</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-image-wrapper">
+            <img class="menu-item-image" src="https://picsum.photos/seed/craveh-drink/400/300" alt="Iced Mango Tea">
+          </div>
+          <div class="menu-item-content">
+            <div class="menu-item-name">Iced Mango Tea</div>
+            <div class="menu-item-description">Refreshing brewed tea with real mango puree, served over ice.</div>
+            <div class="menu-item-footer">
+              <span class="menu-item-price">3.25</span>
+              <button class="btn btn-primary btn-add">Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer"><div class="container">&copy; 2026 <span class="footer-brand">Craveh</span>. All rights reserved.</div></footer>
+</body>
+</html>
