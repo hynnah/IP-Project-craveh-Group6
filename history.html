@@ -1,9 +1,9 @@
-<DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout - Craveh</title>
+  <title>Order History - Craveh</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -15,13 +15,98 @@
       <button class="hamburger" id="hamburger-btn" aria-label="Toggle menu"><span></span><span></span><span></span></button>
       <nav class="nav" id="main-nav">
         <a href="menu.html" class="nav-link">Menu</a>
-        <a href="history.html" class="nav-link">History</a>
-        <a href="checkout.html" class="nav-link active">Checkout <span class="cart-badge">1</span></a>
-        <a href="account.html" class="nav-link">user</a>
+        <a href="history.html" class="nav-link active">History</a>
+        <a href="checkout.html" class="nav-link">Checkout <span class="cart-badge" hidden></span></a>
+        <a href="account.html" class="nav-link">Account</a>
       </nav>
     </div>
   </header>
-<body>
-    
+
+  <main class="main-content">
+    <div class="container">
+      <div class="page-header">
+        <h1 class="page-title">Order History</h1>
+        <p class="page-subtitle">Track your orders and view past deliveries</p>
+      </div>
+
+      <div class="empty-state" id="history-auth" hidden>
+        <div class="empty-state-icon">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <h3>Authentication Required</h3>
+        <p>Sign in to access your order history and track deliveries</p>
+        <a href="account.html?redirect=history.html" class="btn btn-primary">Sign In</a>
+      </div>
+
+      <!-- Static sample orders for now; will be loaded from api/history.php later. -->
+      <div class="orders-list" id="history-orders" hidden>
+        <div class="order-card">
+          <div class="order-header">
+            <div class="order-header-left">
+              <div class="order-id-wrapper">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
+                <p class="order-id">Order #1042</p>
+              </div>
+              <span class="order-date">Sep 18, 2026 · 6:42 PM</span>
+            </div>
+            <span class="order-status order-status-delivered">Delivered</span>
+          </div>
+          <div class="order-items">
+            <div class="order-item">
+              <span class="order-item-name"><span class="item-qty-badge">1x</span> Caesar Salad</span>
+              <span>₱89.00</span>
+            </div>
+          </div>
+          <div class="order-footer">
+            <div class="order-delivery">
+              <p>Delivery Address</p>
+              <p class="order-delivery-address">123 Main St, Cebu City</p>
+            </div>
+            <div class="order-total">
+              <p>Total</p>
+              <span class="order-total-amount">₱89.00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="order-card">
+          <div class="order-header">
+            <div class="order-header-left">
+              <div class="order-id-wrapper">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
+                <p class="order-id">Order #1038</p>
+              </div>
+              <span class="order-date">Sep 12, 2026 · 12:05 PM</span>
+            </div>
+            <span class="order-status order-status-out_for_delivery">Out for Delivery</span>
+          </div>
+          <div class="order-items">
+            <div class="order-item">
+              <span class="order-item-name"><span class="item-qty-badge">1x</span> Pepperoni Pizza</span>
+              <span>₱299.00</span>
+            </div>
+            <div class="order-item">
+              <span class="order-item-name"><span class="item-qty-badge">2x</span> Iced Tea</span>
+              <span>₱130.00</span>
+            </div>
+          </div>
+          <div class="order-footer">
+            <div class="order-delivery">
+              <p>Delivery Address</p>
+              <p class="order-delivery-address">Sunrise Apartments, 3rd Flr, Talamban</p>
+            </div>
+            <div class="order-total">
+              <p>Total</p>
+              <span class="order-total-amount">₱429.00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer"><div class="container">&copy; 2026 <span class="footer-brand">Craveh</span>. All rights reserved.</div></footer>
+  <script src="assets/js/common.js"></script>
+  <script src="assets/js/history.js"></script>
 </body>
 </html>

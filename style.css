@@ -24,6 +24,8 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
+/* Class display rules (e.g. .orders-list, .cart-badge) would otherwise override the hidden attribute. */
+[hidden] { display: none !important; }
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -92,8 +94,7 @@ body {
   font-weight: 700;
   box-shadow: 0 2px 6px rgba(255, 107, 53, 0.4);
   animation: pulse 2s ease-in-out infinite;
-}
-@keyframes pulse {
+}@keyframes pulse {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.1); }
 }
@@ -510,6 +511,7 @@ body {
   font-weight: 600; cursor: pointer; font-size: 0.875rem;
   display: inline-flex; align-items: center; gap: 0.4rem; justify-content: center;
   transition: all 0.2s var(--ease); font-family: inherit;
+  text-decoration: none;
   position: relative;
   overflow: hidden;
 }

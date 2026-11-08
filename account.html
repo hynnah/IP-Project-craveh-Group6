@@ -16,7 +16,7 @@
       <nav class="nav" id="main-nav">
         <a href="menu.html" class="nav-link">Menu</a>
         <a href="history.html" class="nav-link">History</a>
-        <a href="checkout.html" class="nav-link">Checkout <span class="cart-badge">2</span></a>
+        <a href="checkout.html" class="nav-link">Checkout <span class="cart-badge" hidden></span></a>
         <a href="account.html" class="nav-link active">Account</a>
       </nav>
     </div>
@@ -29,29 +29,48 @@
         <p class="page-subtitle">Manage your profile and delivery preferences</p>
       </div>
 
-      <div class="auth-container">
+      <div class="auth-container" id="auth-view">
         <div class="form-card">
-          <h2>Login</h2>
-          <form>
+          <h2 id="auth-title">Login</h2>
+          <form id="auth-form" novalidate>
+            <div class="form-group" id="name-group" hidden>
+              <label for="name-input">Name</label>
+              <input type="text" id="name-input" autocomplete="name">
+            </div>
             <div class="form-group">
               <label for="email-input">Email</label>
-              <input type="email" id="email-input">
+              <input type="email" id="email-input" autocomplete="email">
             </div>
             <div class="form-group">
               <label for="password-input">Password</label>
-              <input type="password" id="password-input">
+              <input type="password" id="password-input" autocomplete="current-password">
             </div>
-            <button type="button" class="btn btn-primary btn-block">Login</button>
+            <p class="error-message" id="auth-error" role="alert"></p>
+            <button type="submit" class="btn btn-primary btn-block" id="auth-submit">Login</button>
           </form>
           <p class="auth-toggle">
-            <span>Don't have an account? </span>
-            <button type="button" class="link-btn">Sign Up</button>
+            <span id="auth-toggle-text">Don't have an account? </span>
+            <button type="button" class="link-btn" id="auth-toggle-btn">Sign Up</button>
           </p>
+        </div>
+      </div>
+
+      <div class="profile-container" id="profile-view" hidden>
+        <div class="profile-card profile-header-card">
+          <div class="profile-header">
+            <div class="profile-info">
+              <h2 id="profile-name"></h2>
+              <p id="profile-email"></p>
+            </div>
+          </div>
+          <button type="button" class="btn btn-secondary btn-block" id="logout-btn">Logout</button>
         </div>
       </div>
     </div>
   </main>
 
   <footer class="footer"><div class="container">&copy; 2026 <span class="footer-brand">Craveh</span>. All rights reserved.</div></footer>
+  <script src="assets/js/common.js"></script>
+  <script src="assets/js/account.js"></script>
 </body>
 </html>
