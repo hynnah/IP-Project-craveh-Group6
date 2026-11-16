@@ -10,12 +10,19 @@ set_exception_handler(function ($e) {
     echo json_encode(['success' => false, 'error' => 'Server error']);
 });
 
-session_set_cookie_params([
-    'httponly' => true,
-    'samesite' => 'Lax',
-    'secure'   => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
-]);
-session_start();
+// Server-to-server endpoints (the payment webhook and the simulator) define
+// CRAVEH_NO_SESSION before including this file. They have no logged-in user,
+// and PHP locks the session file for the whole request — so a request that
+// holds the lock while calling another endpoint that also wants it would
+// deadlock until one of them times out.
+if (!defined('CRAVEH_NO_SESSION')) {
+    session_set_cookie_params([
+        'httponly' => true,
+        'samesite' => 'Lax',
+        'secure'   => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+    ]);
+    session_start();
+}
 
 require_once __DIR__ . '/config.php';
 

@@ -48,6 +48,12 @@
             <p class="error-message" id="auth-error" role="alert"></p>
             <button type="submit" class="btn btn-primary btn-block" id="auth-submit">Login</button>
           </form>
+
+          <!-- Both stay hidden until auth_config.php confirms a client ID is
+               configured and Google's library has loaded. -->
+          <div class="auth-divider" id="google-divider" hidden><span>or</span></div>
+          <div class="google-signin" id="google-signin-btn" hidden></div>
+
           <p class="auth-toggle">
             <span id="auth-toggle-text">Don't have an account? </span>
             <button type="button" class="link-btn" id="auth-toggle-btn">Sign Up</button>
@@ -70,6 +76,7 @@
   </main>
 
   <footer class="footer"><div class="container">&copy; 2026 <span class="footer-brand">Craveh</span>. All rights reserved.</div></footer>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="assets/js/common.js"></script>
   <script src="assets/js/account.js"></script>
 </body>

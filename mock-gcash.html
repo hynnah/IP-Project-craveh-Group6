@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GCash Payment (Simulator)</title>
+  <!--
+    This page stands in for the payment provider's hosted checkout. It is
+    styled deliberately unlike Craveh, because the point of the demo is that
+    the customer has LEFT the merchant's site. Pressing Authorise does not
+    tell Craveh anything directly: it asks this simulated provider to send a
+    signed webhook, exactly as a real gateway would.
+  -->
+  <style>
+    :root { --gcash-blue: #0b74d1; --gcash-dark: #075298; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: #eef3f8; color: #12263f;
+      display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+    }
+    .sim-banner {
+      position: fixed; top: 0; left: 0; right: 0;
+      background: #fff4d6; color: #7a5600; border-bottom: 1px solid #f0d58c;
+      padding: 0.55rem 1rem; font-size: 0.78rem; text-align: center; font-weight: 600;
+    }
+    .sheet {
+      width: 100%; max-width: 400px; background: #fff; border-radius: 16px;
+      box-shadow: 0 18px 50px rgba(7, 82, 152, 0.18); overflow: hidden;
+    }
+    .sheet-head {
+      background: linear-gradient(135deg, var(--gcash-blue), var(--gcash-dark));
+      color: #fff; padding: 1.6rem 1.5rem;
+    }
+    .wordmark { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; }
+    .wordmark span { font-weight: 400; opacity: 0.85; font-size: 0.8rem; display: block; margin-top: 0.15rem; }
+    .sheet-body { padding: 1.5rem; }
+    .row { display: flex; justify-content: space-between; align-items: baseline; padding: 0.6rem 0; border-bottom: 1px solid #eef2f6; }
+    .row:last-of-type { border-bottom: 0; }
+    .row dt { color: #6b7b8f; font-size: 0.82rem; margin: 0; }
+    .row dd { margin: 0; font-weight: 600; font-size: 0.9rem; text-align: right; }
+    .amount { font-size: 1.9rem; font-weight: 800; color: var(--gcash-dark); margin: 0.3rem 0 1.1rem; }
+    .amount-label { color: #6b7b8f; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.6px; }
+    dl { margin: 0 0 1.4rem; }
+    button {
+      width: 100%; padding: 0.85rem; border-radius: 10px; border: 0;
+      font-size: 0.95rem; font-weight: 700; cursor: pointer; font-family: inherit;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+    button:active { transform: scale(0.985); }
+    button:disabled { opacity: 0.55; cursor: not-allowed; }
+    .btn-pay { background: var(--gcash-blue); color: #fff; margin-bottom: 0.6rem; }
+    .btn-cancel { background: #fff; color: #93a1b1; border: 1.5px solid #dbe3ec; }
+    .state { text-align: center; padding: 2.5rem 1.5rem; color: #6b7b8f; font-size: 0.9rem; }
+    .error { color: #c0392b; }
+    .ref { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.72rem; color: #93a1b1; word-break: break-all; }
+  </style>
+</head>
+<body>
+  <div class="sim-banner">
+    Payment simulator — stands in for the GCash hosted checkout. No real money moves.
+  </div>
+
+  <div class="sheet">
+    <div class="sheet-head">
+      <div class="wordmark">GCash<span>Secure checkout</span></div>
+    </div>
+
+    <div class="sheet-body">
+      <div id="loading" class="state">Loading payment details…</div>
+      <div id="error" class="state error" hidden></div>
+
+      <div id="details" hidden>
+        <p class="amount-label">Amount due</p>
+        <p class="amount" id="amount">₱0.00</p>
+
+        <dl>
+          <div class="row"><dt>Pay to</dt><dd>Craveh Food Delivery</dd></div>
+          <div class="row"><dt>Reference</dt><dd>Order #<span id="order-id"></span></dd></div>
+          <div class="row"><dt>Account</dt><dd id="customer"></dd></div>
+        </dl>
+
+        <button class="btn-pay" id="btn-pay" type="button">Authorise payment</button>
+        <button class="btn-cancel" id="btn-cancel" type="button">Cancel and return</button>
+
+        <p class="ref" id="reference"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/mock-gcash.js"></script>
+</body>
+</html>
