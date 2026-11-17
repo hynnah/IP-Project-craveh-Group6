@@ -15,6 +15,13 @@ $stmt->execute();
 $user = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
+// An account created through Google has no local password. Say so plainly
+// instead of "invalid email or password", which would send the customer off
+// trying to remember a password that never existed.
+if ($user && $user['password_hash'] === null) {
+    fail('This account signs in with Google. Use the Sign in with Google button.', 409);
+}
+
 if (!$user || !password_verify($password, $user['password_hash'])) {
     fail('Invalid email or password', 401);
 }

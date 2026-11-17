@@ -29,6 +29,10 @@
         <p class="page-subtitle">Track your orders and view past deliveries</p>
       </div>
 
+      <div class="loading-spinner" id="history-loading">
+        <p>Loading your orders…</p>
+      </div>
+
       <div class="empty-state" id="history-auth" hidden>
         <div class="empty-state-icon">
           <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -38,70 +42,19 @@
         <a href="account.html?redirect=history.html" class="btn btn-primary">Sign In</a>
       </div>
 
-      <!-- Static sample orders for now; will be loaded from api/history.php later. -->
-      <div class="orders-list" id="history-orders" hidden>
-        <div class="order-card">
-          <div class="order-header">
-            <div class="order-header-left">
-              <div class="order-id-wrapper">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
-                <p class="order-id">Order #1042</p>
-              </div>
-              <span class="order-date">Sep 18, 2026 · 6:42 PM</span>
-            </div>
-            <span class="order-status order-status-delivered">Delivered</span>
-          </div>
-          <div class="order-items">
-            <div class="order-item">
-              <span class="order-item-name"><span class="item-qty-badge">1x</span> Caesar Salad</span>
-              <span>₱89.00</span>
-            </div>
-          </div>
-          <div class="order-footer">
-            <div class="order-delivery">
-              <p>Delivery Address</p>
-              <p class="order-delivery-address">123 Main St, Cebu City</p>
-            </div>
-            <div class="order-total">
-              <p>Total</p>
-              <span class="order-total-amount">₱89.00</span>
-            </div>
-          </div>
+      <div class="empty-state" id="history-empty" hidden>
+        <div class="empty-state-icon">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg>
         </div>
-
-        <div class="order-card">
-          <div class="order-header">
-            <div class="order-header-left">
-              <div class="order-id-wrapper">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
-                <p class="order-id">Order #1038</p>
-              </div>
-              <span class="order-date">Sep 12, 2026 · 12:05 PM</span>
-            </div>
-            <span class="order-status order-status-out_for_delivery">Out for Delivery</span>
-          </div>
-          <div class="order-items">
-            <div class="order-item">
-              <span class="order-item-name"><span class="item-qty-badge">1x</span> Pepperoni Pizza</span>
-              <span>₱299.00</span>
-            </div>
-            <div class="order-item">
-              <span class="order-item-name"><span class="item-qty-badge">2x</span> Iced Tea</span>
-              <span>₱130.00</span>
-            </div>
-          </div>
-          <div class="order-footer">
-            <div class="order-delivery">
-              <p>Delivery Address</p>
-              <p class="order-delivery-address">Sunrise Apartments, 3rd Flr, Talamban</p>
-            </div>
-            <div class="order-total">
-              <p>Total</p>
-              <span class="order-total-amount">₱429.00</span>
-            </div>
-          </div>
-        </div>
+        <h3>No orders yet</h3>
+        <p>Once you place an order it will appear here with live delivery progress</p>
+        <a href="menu.html" class="btn btn-primary">Browse Menu</a>
       </div>
+
+      <p class="error-message" id="history-error" role="alert"></p>
+
+      <!-- Filled by assets/js/history.js from api/history.php. -->
+      <div class="orders-list" id="history-orders" hidden></div>
     </div>
   </main>
 

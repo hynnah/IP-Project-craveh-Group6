@@ -10,6 +10,11 @@ function field(name) {
   return document.getElementById('co-' + name);
 }
 
+function selectedPaymentMethod() {
+  const checked = document.querySelector('input[name="payment-method"]:checked');
+  return checked ? checked.value : 'cod';
+}
+
 function renderCart() {
   const container = document.getElementById('checkout-items');
   const total = getCartTotal();
@@ -18,7 +23,7 @@ function renderCart() {
   document.getElementById('checkout-summary-footer').hidden = empty;
   document.getElementById('checkout-details').hidden = empty;
   document.getElementById('checkout-total').textContent = formatPrice(total);
-  document.getElementById('place-order-label').textContent = `Place Order - ${formatPrice(total)}`;
+  updatePlaceOrderLabel();
 
   if (empty) {
     container.innerHTML = `
@@ -101,11 +106,19 @@ function restoreDraft() {
 
 // ── Placing the order ──
 
-function setPlacing(placing) {
+function updatePlaceOrderLabel() {
+  const verb = selectedPaymentMethod() === 'gcash' ? 'Pay with GCash' : 'Place Order';
+  document.getElementById('place-order-label').textContent = `${verb} - ${formatPrice(getCartTotal())}`;
+}
+
+function setPlacing(placing, message) {
   const btn = document.getElementById('place-order-btn');
   btn.disabled = placing;
-  document.getElementById('place-order-label').textContent =
-    placing ? 'Placing Order…' : `Place Order - ${formatPrice(getCartTotal())}`;
+  if (placing) {
+    document.getElementById('place-order-label').textContent = message || 'Placing Order…';
+  } else {
+    updatePlaceOrderLabel();
+  }
 }
 
 function showOrderSuccess(orderId) {
@@ -123,6 +136,21 @@ function showOrderSuccess(orderId) {
     </div>`;
 }
 
+// The order exists but the gateway could not be reached. Say so plainly
+// rather than pretending the order failed — it did not, and the customer
+// needs to know it is sitting there unpaid.
+function showPaymentUnavailable(orderId, error) {
+  document.getElementById('checkout-content').innerHTML = `
+    <div class="success-card">
+      <h2>Order #${escapeHtml(String(orderId))} saved, but payment could not start</h2>
+      <p>${escapeHtml(error || 'The payment provider did not respond.')}</p>
+      <p>Your order is waiting in your history. You can try paying again from there.</p>
+      <div class="success-actions">
+        <a href="history.html" class="btn btn-primary">Go to Order History</a>
+      </div>
+    </div>`;
+}
+
 async function handlePlaceOrder() {
   const orderError = document.getElementById('order-error');
   orderError.textContent = '';
@@ -136,6 +164,8 @@ async function handlePlaceOrder() {
   const values = readForm();
   if (!validateForm(values) || cart.length === 0) return;
 
+  const paymentMethod = selectedPaymentMethod();
+
   setPlacing(true);
   // Make sure the latest cart is saved before the server reads it.
   await saveQueue;
@@ -143,6 +173,7 @@ async function handlePlaceOrder() {
     userId: currentUser.id,
     address: buildAddress(values),
     phone: values.phone,
+    paymentMethod,
     items: cart.map(item => ({ menuItemId: item.id, name: item.name, price: item.price, quantity: item.quantity })),
   });
 
@@ -155,7 +186,23 @@ async function handlePlaceOrder() {
   // The server already emptied the saved cart.
   cart = [];
   updateCartBadge();
-  showOrderSuccess(data.orderId);
+
+  if (paymentMethod !== 'gcash') {
+    showOrderSuccess(data.orderId);
+    return;
+  }
+
+  // Hand the customer over to the gateway. The order is already saved and
+  // marked 'pending' payment, so nothing is lost if they abandon the page.
+  setPlacing(true, 'Opening GCash…');
+  const payment = await api('create_payment.php', { orderId: data.orderId });
+
+  if (!payment.success || !payment.checkoutUrl) {
+    showPaymentUnavailable(data.orderId, payment.error);
+    return;
+  }
+
+  location.href = payment.checkoutUrl;
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -171,6 +218,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   restoreDraft();
 
   document.getElementById('place-order-btn').addEventListener('click', handlePlaceOrder);
+
+  const methods = document.getElementById('payment-methods');
+  if (methods) {
+    methods.addEventListener('change', () => {
+      methods.querySelectorAll('.payment-method-card').forEach(card => {
+        card.classList.toggle('selected', card.querySelector('input').checked);
+      });
+      updatePlaceOrderLabel();
+    });
+  }
 
   document.getElementById('checkout-items').addEventListener('click', e => {
     const btn = e.target.closest('[data-action]');

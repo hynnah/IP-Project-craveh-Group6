@@ -1,4 +1,4 @@
-// Account page: login, sign up and logout.
+// Account page: login, sign up, Google sign-in and logout.
 
 let isSignup = false;
 
@@ -31,6 +31,19 @@ function showView(user) {
   updateAccountLink(user);
 }
 
+// Shared by both sign-in routes: whatever got us a session, the page does
+// the same thing afterwards.
+async function completeLogin(user, form) {
+  await loadSession();
+  if (redirectNotice) {
+    location.href = redirectTo;
+    return;
+  }
+  if (form) form.reset();
+  showView(user);
+  updateCartBadge();
+}
+
 async function handleSubmit(e) {
   e.preventDefault();
   const error = document.getElementById('auth-error');
@@ -57,14 +70,64 @@ async function handleSubmit(e) {
     return;
   }
   // Login may restore a saved cart.
-  await loadSession();
-  if (redirectNotice) {
-    location.href = redirectTo;
+  await completeLogin(data.user, e.target);
+}
+
+// ── Google sign-in ──
+
+// Google's library is loaded with async/defer, so it may not have arrived by
+// the time this script runs. Wait for it rather than assuming.
+function waitForGoogleLibrary(timeoutMs = 6000) {
+  return new Promise(resolve => {
+    const startedAt = Date.now();
+    (function poll() {
+      if (window.google && window.google.accounts && window.google.accounts.id) return resolve(true);
+      if (Date.now() - startedAt > timeoutMs) return resolve(false);
+      setTimeout(poll, 100);
+    })();
+  });
+}
+
+// Google hands the browser a signed ID token. The browser never decides who
+// the user is — it forwards the token, and the server decides.
+async function handleGoogleCredential(response) {
+  const error = document.getElementById('auth-error');
+  error.textContent = '';
+
+  const data = await api('google_login.php', { credential: response.credential });
+  if (!data.success) {
+    error.textContent = data.error || 'Google sign-in failed. Please try again.';
     return;
   }
-  e.target.reset();
-  showView(data.user);
-  updateCartBadge();
+  await completeLogin(data.user, document.getElementById('auth-form'));
+}
+
+async function initGoogleSignIn() {
+  const config = await api('auth_config.php');
+  const clientId = config.googleClientId;
+  // Not configured on this machine: leave the button hidden rather than
+  // showing one that is guaranteed to fail.
+  if (!clientId) return;
+
+  if (!(await waitForGoogleLibrary())) return;
+
+  const container = document.getElementById('google-signin-btn');
+  // Unhide before rendering: Google sizes the button from its container, and
+  // a hidden element measures zero.
+  document.getElementById('google-divider').hidden = false;
+  container.hidden = false;
+
+  google.accounts.id.initialize({
+    client_id: clientId,
+    callback: handleGoogleCredential,
+  });
+  google.accounts.id.renderButton(container, {
+    theme: 'outline',
+    size: 'large',
+    text: 'continue_with',
+    shape: 'rectangular',
+    width: Math.min(container.clientWidth || 320, 400),
+  });
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -86,4 +149,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   if (redirectNotice) document.querySelector('.page-subtitle').textContent = redirectNotice;
   showView(session.user);
+
+  if (!session.user) initGoogleSignIn();
 });
